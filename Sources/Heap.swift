@@ -3,8 +3,6 @@ public class Heap{
 	public struct No{
 		var peso: Int
 		var caracter: Int
-		var esquerda: Int
-		var direita: Int
 	}
 
 	var raiz: Int = -1
@@ -16,7 +14,7 @@ public class Heap{
 
 	public func inserir(no: No){
 		vetor.append(no)
-		var indice = vetor.count
+		var indice = (vetor.count - 1)
  
 		while (vetor[indice].peso < vetor[indicePai(indice)].peso) {
 			troca(indice, indice2: indicePai(indice));
@@ -25,52 +23,57 @@ public class Heap{
 	}
 
 	public func inserir(peso: Int, caracter: Int){
-		let no = No(peso: peso, caracter: caracter, esquerda: -1, direita: -1)
+		let no = No(peso: peso, caracter: caracter)
 		vetor.append(no)
-		var indice = vetor.count
- 
-		while (vetor[indice].peso < vetor[indicePai(indice)].peso) {
+		var indice = (vetor.count - 1)
+
+		while (indice > 0 && vetor[indice].peso < vetor[indicePai(indice)].peso) {
 			troca(indice, indice2: indicePai(indice));
 			indice = indicePai(indice);
 		}
 	}
 
 	public func minHeap(){
-		for indice in (vetor.count/2)...1 {
+		for var indice = (vetor.count/2); indice > 0; (indice-=1) {
 			minHeapify(indice);
 		}
 	}
 
-	public func printHeap(){
-		for i in 1...(vetor.count/2) {
-			print("Pai: \(vetor[i].peso) Direita: \(vetor[2*i].peso)  Esquerda: \(vetor[2 * i  + 1].peso)");
+	public func printHeap(indice: Int){
+		if(indice < vetor.count){
+			print(vetor[indice].peso, terminator: " ")
+			printHeap(indiceEsquerda(indice))
+			printHeap(indiceDireita(indice))
 		}
 	}
 
-	public func remover() -> No{
-		let no = vetor[0];
-		vetor[0] = vetor[vetor.count]; 
-		minHeapify(0);
-		return no;
+	public func remover() -> No? {
+		if vetor.isEmpty {
+			return nil
+		} else if vetor.count == 1 {
+			return vetor.removeLast()
+		} else {
+			let valor = vetor[0]
+			vetor[0] = vetor.removeLast()
+			minHeapify(0)
+			return valor
+		}
 	}
 
 	private func indicePai(indice: Int) -> Int{
-		return indice/2
+		return (indice - 1)/2
 	}
 
 	private func indiceEsquerda(indice: Int) -> Int{
-		return indice * 2
-	}
-
-	private func indiceDireita(indice: Int) -> Int{
 		return (indice * 2) + 1
 	}
 
+	private func indiceDireita(indice: Int) -> Int{
+		return (indice * 2) + 2
+	}
+
 	private func ehFolha(indice: Int) -> Bool{
-		if (indice >= (vetor.count / 2) && indice < vetor.count){
-			return true;
-		}
-		return false;
+		return indiceEsquerda(indice) >= vetor.count;
 	}
 
 	private func troca(indice1: Int, indice2: Int){
@@ -80,15 +83,17 @@ public class Heap{
 	}
 
 	private func minHeapify(indice: Int){
-		if (!ehFolha(indice)){ 
-			if (vetor[indice].peso > vetor[indiceEsquerda(indice)].peso  || vetor[indice].peso > vetor[indiceDireita(indice)].peso) {
-				if (vetor[indiceEsquerda(indice)].peso < vetor[indiceDireita(indice)].peso) {
-					troca(indice, indice2: indiceEsquerda(indice));
-					minHeapify(indiceEsquerda(indice));
-				} else {
-					troca(indice, indice2: indiceDireita(indice));
-					minHeapify(indiceDireita(indice));
-				}
+		if (!ehFolha(indice)){
+			var menor = indice
+			if(indiceEsquerda(indice) < vetor.count && vetor[menor].peso > vetor[indiceEsquerda(indice)].peso){
+				menor = indiceEsquerda(indice)
+			}
+			if(indiceDireita(indice) < vetor.count && vetor[menor].peso > vetor[indiceDireita(indice)].peso){
+				menor = indiceDireita(indice)
+			}
+			if(menor != indice){
+				troca(indice, indice2: menor);
+				minHeapify(menor);
 			}
 		}
 	}

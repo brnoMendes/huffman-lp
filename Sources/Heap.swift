@@ -13,4 +13,20 @@ public class Heap{
 	public init(){
 
 	}
+
+	public func inserir(peso: Int, caracter: Int){
+
+	}
+
+	private func indicePai(indice: Int) -> Int{
+		return indice/2
+	}
+
+	private func indiceDireita(indice: Int) -> Int{
+		return indice * 2
+	}
+
+	private func indiceEsquerda(indice: Int) -> Int{
+		return (indice * 2) + 1
+	}
 }

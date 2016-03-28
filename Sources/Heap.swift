@@ -14,8 +14,25 @@ public class Heap{
 
 	}
 
-	public func inserir(peso: Int, caracter: Int){
+	public func inserir(no: No){
+		vetor.append(no)
+		var indice = vetor.count
+ 
+		while (vetor[indice].peso < vetor[indicePai(indice)].peso) {
+			troca(indice, indice2: indicePai(indice));
+			indice = indicePai(indice);
+		}
+	}
 
+	public func inserir(peso: Int, caracter: Int){
+		let no = No(peso: peso, caracter: caracter, esquerda: -1, direita: -1)
+		vetor.append(no)
+		var indice = vetor.count
+ 
+		while (vetor[indice].peso < vetor[indicePai(indice)].peso) {
+			troca(indice, indice2: indicePai(indice));
+			indice = indicePai(indice);
+		}
 	}
 
 	private func indicePai(indice: Int) -> Int{
@@ -56,4 +73,5 @@ public class Heap{
 			}
 		}
 	}
+
 }

@@ -35,6 +35,25 @@ public class Heap{
 		}
 	}
 
+	public func minHeap(){
+		for indice in (vetor.count/2)...1 {
+			minHeapify(indice);
+		}
+	}
+
+	public func printHeap(){
+		for i in 1...(vetor.count/2) {
+			print("Pai: \(vetor[i].peso) Direita: \(vetor[2*i].peso)  Esquerda: \(vetor[2 * i  + 1].peso)");
+		}
+	}
+
+	public func remover() -> No{
+		let no = vetor[0];
+		vetor[0] = vetor[vetor.count]; 
+		minHeapify(0);
+		return no;
+	}
+
 	private func indicePai(indice: Int) -> Int{
 		return indice/2
 	}

@@ -1,7 +1,7 @@
 class No<Int: Comparable> {
 
 	var peso: Int?
-	var caracter: Int?
+	var caracter: UInt8?
 	var pai: No?
 	var esquerda: No?
 	var direita: No?
@@ -15,7 +15,7 @@ class No<Int: Comparable> {
 		}
 	}
 
-	func inserir(peso: Int, caracter: Int){
+	func inserir(peso: Int, caracter: UInt8){
 		self.peso = peso
 		self.caracter = caracter
 		self.pai = nil
@@ -24,7 +24,7 @@ class No<Int: Comparable> {
 	}
 
 	func imprimir(){
-		print("Valor:", self.peso!)
+		print("Valor:", self.peso)
 		if(self.esquerda != nil){
 			self.esquerda!.imprimir()
 		}

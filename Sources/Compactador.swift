@@ -2,7 +2,9 @@ import Foundation
 
 public class Compactador {
 
-	public var dado = NSMutableData()
+	public var dadoCompactado = NSMutableData()
+	var byteSaida: UInt8 = 0
+	var contadorBit = 0
 
 	public func compactar(dado: String){
 		var frequencia = [Int](count: 128, repeatedValue: 0)
@@ -19,7 +21,7 @@ public class Compactador {
 		for i in 0...127 {
 			if(frequencia[i] > 0) {
 				let no = No<Int>()
-				no.inserir(frequencia[i], caracter: i)
+				no.inserir(frequencia[i], caracter: UInt8(i))
 				arvore.append(no)
 			}
 		}
@@ -39,8 +41,12 @@ public class Compactador {
 
 		let raiz = arvore.removeFirst()
 
+		escreverCabecalho(raiz)
+		//escreveResto()
+		var flag: UInt8 = 0
+		//dadoCompactado.appendBytes(&flag, length: 1)
 		for caracter in String(dado).utf8 { 
-			procuraFolha(raiz, caracter: Int(caracter))
+			procuraFolha(raiz, caracter: UInt8(caracter))
 		}
 
 		escreveResto()
@@ -61,9 +67,9 @@ public class Compactador {
 		}
 	}
 
-	private func procuraFolha(no: No<Int>, caracter: Int){
+	private func procuraFolha(no: No<Int>, caracter: UInt8){
 		if(no.direita == nil && no.esquerda == nil && no.caracter == caracter){
-			escrever(no, filho: nil)
+			escreverBits(no, filho: nil)
 		} else {
 			if no.esquerda != nil {
 				procuraFolha(no.esquerda!, caracter: caracter)
@@ -74,9 +80,9 @@ public class Compactador {
 		}
 	}
 
-	private func escrever(no: No<Int>, filho: No<Int>?){
+	private func escreverBits(no: No<Int>, filho: No<Int>?){
 		if(no.pai != nil){
-			escrever(no.pai!, filho: no)
+			escreverBits(no.pai!, filho: no)
 		}
 		if(filho != nil){
 			if(no.direita === filho){
@@ -87,25 +93,51 @@ public class Compactador {
 		}
 	}
 
-	var byteSaida: UInt8 = 0
-	var contadorBit = 0
+	private func escreverCabecalho(no: No<Int>){
+		if(no.direita != nil || no.esquerda != nil){
+			if(no.esquerda != nil){
+				escreveBit(true)
+				escreverCabecalho(no.esquerda!)
+			}
+			if no.direita != nil {
+				escreveBit(true)
+				escreverCabecalho(no.direita!)
+			}
+		} else {
+			escreveByte(&no.caracter!)
+		}
+	}
 
 	private func escreveBit(bit: Bool) {
 		if contadorBit == 8 {
-			dado.appendBytes(&byteSaida, length: 1)
+			dadoCompactado.appendBytes(&byteSaida, length: 1)
 			contadorBit = 0
 		}
 		byteSaida = (byteSaida << 1) | (bit ? 1 : 0)
 		contadorBit += 1
 	}
 
+	private func escreveByte(inout byte: UInt8){
+		var b = byte
+		var mascara = 0x80
+		for _ in 0...7 {
+			b = byte & UInt8(mascara)
+			mascara = mascara >> 1
+			if b != 0 {
+				escreveBit(true)
+			} else {
+				escreveBit(false)
+			}
+		}
+	}
+
 	private func escreveResto() {
 		if contadorBit > 0 {
 			if contadorBit < 8 {
 				let resto = UInt8(8 - contadorBit)
-				byteSaida <<= resto
+				byteSaida = byteSaida << resto
 			}
-			dado.appendBytes(&byteSaida, length: 1)
+			dadoCompactado.appendBytes(&byteSaida, length: 1)
 		}
 	}
 }

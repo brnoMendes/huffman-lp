@@ -34,7 +34,7 @@ public class Descompactador {
 	private func leInt(leitorBit: ManipuladorBit) -> Int {
 		var int = 0
 		var shift = 0;
-		for i in 0...7 {
+		for _ in 0...7 {
 			var byte: UInt8 = 0
 			var mascara: UInt8 = 0x80
 			for _ in 0...7 {

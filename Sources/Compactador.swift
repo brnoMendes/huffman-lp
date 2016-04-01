@@ -7,11 +7,16 @@ public class Compactador {
 	var contadorBit = 0
 
 	public func compactar(dado: String){
-		var frequencia = [Int](count: 128, repeatedValue: 0)
+		var frequencia = [UInt8](count: 128, repeatedValue: 0)
 
 		// Contar a frequencia de cada caracter no texto.
 		for character in String(dado).utf8 { 
 			frequencia[Int(character)] += 1
+		}
+
+		for i in frequencia{
+			var freq = i
+			dadoCompactado.appendBytes(&freq, length: 1)
 		}
 
 		var arvore = [No<Int>()]
@@ -21,7 +26,7 @@ public class Compactador {
 		for i in 0...127 {
 			if(frequencia[i] > 0) {
 				let no = No<Int>()
-				no.inserir(frequencia[i], caracter: UInt8(i))
+				no.inserir(Int(frequencia[i]), caracter: UInt8(i))
 				arvore.append(no)
 			}
 		}
@@ -41,10 +46,6 @@ public class Compactador {
 
 		let raiz = arvore.removeFirst()
 
-		escreverCabecalho(raiz)
-		//escreveResto()
-		var flag: UInt8 = 0
-		//dadoCompactado.appendBytes(&flag, length: 1)
 		for caracter in String(dado).utf8 { 
 			procuraFolha(raiz, caracter: UInt8(caracter))
 		}
@@ -93,21 +94,6 @@ public class Compactador {
 		}
 	}
 
-	private func escreverCabecalho(no: No<Int>){
-		if(no.direita != nil || no.esquerda != nil){
-			if(no.esquerda != nil){
-				escreveBit(true)
-				escreverCabecalho(no.esquerda!)
-			}
-			if no.direita != nil {
-				escreveBit(true)
-				escreverCabecalho(no.direita!)
-			}
-		} else {
-			escreveByte(&no.caracter!)
-		}
-	}
-
 	private func escreveBit(bit: Bool) {
 		if contadorBit == 8 {
 			dadoCompactado.appendBytes(&byteSaida, length: 1)
@@ -115,20 +101,6 @@ public class Compactador {
 		}
 		byteSaida = (byteSaida << 1) | (bit ? 1 : 0)
 		contadorBit += 1
-	}
-
-	private func escreveByte(inout byte: UInt8){
-		var b = byte
-		var mascara = 0x80
-		for _ in 0...7 {
-			b = byte & UInt8(mascara)
-			mascara = mascara >> 1
-			if b != 0 {
-				escreveBit(true)
-			} else {
-				escreveBit(false)
-			}
-		}
 	}
 
 	private func escreveResto() {

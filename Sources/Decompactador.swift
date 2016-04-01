@@ -1,18 +1,8 @@
 import Foundation
 
 public class Descompactador {
-	public var dadoDescompactado: String
-	var ponteiro: UnsafePointer<UInt8>
 
-	public init(){
-		dadoDescompactado = "A"
-		let a = NSMutableData()
-		a.appendBytes(dadoDescompactado, length:1)
-		ponteiro = UnsafePointer<UInt8>(a.bytes)
-	}
-
-	public func descompactar(dado: NSData){
-		ponteiro = UnsafePointer<UInt8>(dado.bytes)
+	public func descompactar(dado: NSData) -> String {
 		
 		var frequencia = [UInt8](count: 128, repeatedValue: 0)
 
@@ -21,10 +11,24 @@ public class Descompactador {
 			frequencia[i] = leByte(leitorBit)
 		}
 
-		for i in frequencia {
-			
+		var arvore = Arvore()
+		var raiz = arvore.constroiArvore(frequencia)
+
+		var quantidadeCaracteres = raiz.peso!
+
+		var string: String = ""
+		for _ in 0...(quantidadeCaracteres - 1){
+			var caracter = raiz;
+			while caracter.direita != nil && caracter.esquerda != nil {
+				if leitorBit.leBit() {
+					caracter = caracter.direita!
+				} else {
+					caracter = caracter.esquerda!
+				}
+			}
+			string.append(UnicodeScalar(caracter.caracter!))
 		}
-		print()
+		return string
 	}
 
 	private func leByte(leitorBit: ManipuladorBit) -> UInt8 {

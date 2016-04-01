@@ -1,6 +1,6 @@
 public class Arvore{
 
-	public func constroiArvore(frequencia: [UInt8]) -> No<Int> {
+	public func constroiArvore(frequencia: [Int]) -> No<Int> {
 
 		var arvore = [No<Int>()]
 		arvore.removeLast()

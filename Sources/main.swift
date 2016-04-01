@@ -1,4 +1,10 @@
-let huffman = Huffman()
-huffman.Huffman(true, diretorioEntrada: "/home/bruno/arquivo.txt", diretorioSaida: "/home/bruno/binario")
+let args = [String](Process.arguments)
 
-huffman.Huffman(false, diretorioEntrada: "/home/bruno/binario", diretorioSaida: "/home/bruno/arquivo2.txt")
+let huffman = Huffman()
+
+var entrada = args[2]
+var saida = args[3]
+
+var opcao = Int(args[1]) == 0 ? false : true
+
+huffman.Huffman(opcao, diretorioEntrada: entrada, diretorioSaida: saida)

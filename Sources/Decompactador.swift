@@ -4,17 +4,17 @@ public class Descompactador {
 
 	public func descompactar(dado: NSData) -> String {
 		
-		var frequencia = [UInt8](count: 128, repeatedValue: 0)
+		var frequencia = [Int](count: 128, repeatedValue: 0)
 
-		var leitorBit = ManipuladorBit(dado: dado)
+		let leitorBit = ManipuladorBit(dado: dado)
 		for i in 0...127 {
-			frequencia[i] = leByte(leitorBit)
+			frequencia[i] = leInt(leitorBit)
 		}
 
-		var arvore = Arvore()
-		var raiz = arvore.constroiArvore(frequencia)
+		let arvore = Arvore()
+		let raiz = arvore.constroiArvore(frequencia)
 
-		var quantidadeCaracteres = raiz.peso!
+		let quantidadeCaracteres = raiz.peso!
 
 		var string: String = ""
 		for _ in 0...(quantidadeCaracteres - 1){
@@ -31,17 +31,21 @@ public class Descompactador {
 		return string
 	}
 
-	private func leByte(leitorBit: ManipuladorBit) -> UInt8 {
-		var byte: UInt8 = 0
-
-		var mascara: UInt8 = 0x80
-		for _ in 0...7 {
-			if leitorBit.leBit() {
-				byte = byte | mascara
+	private func leInt(leitorBit: ManipuladorBit) -> Int {
+		var int = 0
+		var shift = 0;
+		for i in 0...7 {
+			var byte: UInt8 = 0
+			var mascara: UInt8 = 0x80
+			for _ in 0...7 {
+				if leitorBit.leBit() {
+					byte = byte | mascara
+				}
+				mascara = mascara >> 1
 			}
-			mascara = mascara >> 1
+			int = int | (Int(byte) << shift)
+			shift += 8
 		}
-
-		return byte
+		return int
 	}
 }

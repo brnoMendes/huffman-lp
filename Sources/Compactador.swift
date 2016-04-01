@@ -7,7 +7,7 @@ public class Compactador {
 	var contadorBit = 0
 
 	public func compactar(dado: String){
-		var frequencia = [UInt8](count: 128, repeatedValue: 0)
+		var frequencia = [Int](count: 128, repeatedValue: 0)
 
 		// Contar a frequencia de cada caracter no texto.
 		for character in String(dado).utf8 { 
@@ -16,11 +16,11 @@ public class Compactador {
 
 		for i in 0...127 {
 			var byte = frequencia[i]
-			dadoCompactado.appendBytes(&byte, length: 1)
+			dadoCompactado.appendBytes(&byte, length: 8)
 		}
 
-		var arvore = Arvore()
-		var raiz = arvore.constroiArvore(frequencia)
+		let arvore = Arvore()
+		let raiz = arvore.constroiArvore(frequencia)
 
 		for caracter in String(dado).utf8 { 
 			procuraFolha(raiz, caracter: UInt8(caracter))

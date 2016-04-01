@@ -1,4 +1,4 @@
-class No<Int: Comparable> {
+public class No<Int: Comparable> {
 
 	var peso: Int?
 	var caracter: UInt8?

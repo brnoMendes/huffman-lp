@@ -1,8 +1,8 @@
-# huffman-lp - Swift
+# huffman-lp
 Codificação de Huffman - Linguagens de programação 2016/1 - UTFPR - @brnomendes e @mairieli
 
-* Compactação: Arquivo ASCII --> Arquivo Binario
-* Descompactação: Arquivo BInario --> Arquivo ASCII
+* Compactação: Arquivo ASCII --> Arquivo Binário
+* Descompactação: Arquivo Binário --> Arquivo ASCII
 
 ```
 $ swift --verion

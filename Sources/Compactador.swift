@@ -79,8 +79,7 @@ public class Compactador {
 			dadoCompactado.appendBytes(&byteSaida, length: 1)
 			contadorBit = 0
 		}
-		bit = bit ? 1 : 0
-		byteSaida = (byteSaida << 1) | bit
+		byteSaida = (byteSaida << 1) | (bit ? 1 : 0)
 		contadorBit += 1
 	}
 

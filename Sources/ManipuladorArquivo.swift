@@ -3,7 +3,7 @@ import Foundation
 public class ManipuladorArquivo {
 
 	public func lerArquivoASCII(diretorio: String) -> String? {
-		let diretorioOriginal = NSString(string:diretorio).stringByExpandingTildeInPath
+		let diretorioOriginal = diretorio.stringByExpandingTildeInPath
 		do{
 			let conteudoArquivo = try String(contentsOfFile: diretorioOriginal, encoding: NSASCIIStringEncoding)
 			return conteudoArquivo
@@ -16,7 +16,7 @@ public class ManipuladorArquivo {
 	
 	public func lerArquivoBinario(diretorio: String) -> NSData? {
 		let diretorioOriginal = diretorio.stringByExpandingTildeInPath
-		let conteudoArquivo: NSData? = NSData(contentsOfFile: diretorioOriginal)
+		let conteudoArquivo = NSData(contentsOfFile: diretorioOriginal)
 		return conteudoArquivo
 	}
 

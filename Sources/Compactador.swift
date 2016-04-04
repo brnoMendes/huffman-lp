@@ -6,7 +6,7 @@ public class Compactador {
 	var byteSaida: UInt8 = 0
 	var contadorBit = 0
 
-	public func compactar(dado: String){
+	public func compactar(dado: String) -> NSData {
 		var frequencia = [Int](count: 128, repeatedValue: 0)
 
 		// Contar a frequencia de cada caracter no texto.
@@ -27,6 +27,8 @@ public class Compactador {
 		}
 
 		escreveResto()
+
+		return dadoCompactado
 	}
 
 	private func procuraFolha(no: No<Int>, caracter: UInt8){

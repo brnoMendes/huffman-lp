@@ -12,9 +12,10 @@ public class ManipuladorBit {
 	public func leBit() -> Bool {
 		if contador == 8 {
 			byteEntrada = ponteiro.memory
-			contador = 0
 			ponteiro = ponteiro.successor()
+			contador = 0
 		}
+		
 		let bit = byteEntrada & 0x80
 		byteEntrada = byteEntrada << 1
 		contador += 1

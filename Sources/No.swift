@@ -22,14 +22,4 @@ public class No<Int: Comparable> {
 		self.esquerda = nil
 		self.direita = nil
 	}
-
-	func imprimir(){
-		print("Valor:", self.peso)
-		if(self.esquerda != nil){
-			self.esquerda!.imprimir()
-		}
-		if(self.direita != nil){
-			self.direita!.imprimir()
-		}
-	}
 }

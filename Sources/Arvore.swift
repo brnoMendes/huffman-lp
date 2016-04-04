@@ -5,7 +5,7 @@ public class Arvore{
 		var arvore = [No<Int>()]
 		arvore.removeLast()
 
-		// Criar uma Arvore para cada Caracter.
+		// Criar uma Arvore para cada Caracter que aparece no texto.
 		for i in 0...127 {
 			if(frequencia[i] > 0) {
 				let no = No<Int>()
@@ -14,9 +14,10 @@ public class Arvore{
 			}
 		}
 
-		// Construir a Arvore
+		// Construir a Arvore, while até que o vetor contenha somente a raiz.
 		while arvore.count > 1 {
 			ordena(&arvore)
+
 			let novoNo = No<Int>()
 			let no1 = arvore.removeFirst()
 			let no2 = arvore.removeFirst()
@@ -24,6 +25,7 @@ public class Arvore{
 			no1.pai = novoNo
 			no2.pai = novoNo
 			novoNo.inserir(no1, direita: no2)
+			
 			arvore.append(novoNo)
 		}
 

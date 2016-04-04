@@ -1,5 +1,3 @@
-import Foundation
-
 public class Huffman{
 
 	public func Huffman(opcao: Bool, diretorioEntrada: String, diretorioSaida: String) {

@@ -1,4 +1,4 @@
- # huffman-lp
+# huffman-lp
 Codificação de Huffman - Linguagens de programação 2016/1 - UTFPR - @brnomendes e @mairieli
 
 * Compactação: Arquivo ASCII --> Arquivo Binário
